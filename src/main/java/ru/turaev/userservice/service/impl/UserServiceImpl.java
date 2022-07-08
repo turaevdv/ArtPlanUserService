@@ -7,6 +7,7 @@ import ru.turaev.userservice.dto.UserDto;
 import ru.turaev.userservice.entity.User;
 import ru.turaev.userservice.enums.Role;
 import ru.turaev.userservice.exception.IllegalUserException;
+import ru.turaev.userservice.exception.UserAlreadyExistException;
 import ru.turaev.userservice.exception.UserNotFoundException;
 import ru.turaev.userservice.mapper.UserMapper;
 import ru.turaev.userservice.repository.UserRepository;
@@ -41,11 +42,11 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public User save(User user) throws IllegalUserException {
+    public User save(User user) throws UserAlreadyExistException {
         try {
             userRepository.save(user);
         } catch (RuntimeException ex) {
-            throw new IllegalUserException("This login is already in use", HttpStatus.BAD_REQUEST, userMapper.toDto(user));
+            throw new UserAlreadyExistException();
         }
         return user;
     }
@@ -53,6 +54,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto findById(long id) throws UserNotFoundException {
         Optional<User> user = userRepository.findByIdAndIsActiveIsTrueAndRoleIs(id, Role.USER);
+        return userMapper.toDto(user.orElseThrow(USER_NOT_FOUND));
+    }
+
+    @Override
+    public UserDto findByUsername(String username) throws UserNotFoundException {
+        Optional<User> user = userRepository.findByUsername(username);
         return userMapper.toDto(user.orElseThrow(USER_NOT_FOUND));
     }
 
@@ -80,7 +87,7 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public UserDto deleteById(long id) throws UserNotFoundException {
+    public UserDto deleteById(long id) throws UserNotFoundException, IllegalUserException {
         User user = userRepository.findById(id).orElseThrow(USER_NOT_FOUND);
         if (!user.isActive()) {
             throw new IllegalUserException("This user has already been deleted", HttpStatus.BAD_REQUEST, userMapper.toDto(user));

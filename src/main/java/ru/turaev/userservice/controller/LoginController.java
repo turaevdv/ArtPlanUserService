@@ -24,7 +24,7 @@ public class LoginController {
         try {
             return loginService.authenticate(model);
         } catch (AuthenticationException ex) {
-            return new ResponseEntity<>("Invalid login/password combination", HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>("Invalid login/password combination", HttpStatus.BAD_REQUEST);
         }
     }
 }

@@ -28,7 +28,7 @@ public class LoginServiceImpl implements LoginService {
     }
 
     @Override
-    public ResponseEntity<?> authenticate(LoginViewModel model) throws UserNotFoundException, AuthenticationException {
+    public ResponseEntity<Map<Object, Object>> authenticate(LoginViewModel model) throws UserNotFoundException, AuthenticationException {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(model.getUsername(), model.getPassword()));
         User user = userRepository.findByUsername(model.getUsername()).orElseThrow(() -> new UserNotFoundException("The user with this id was not found"));
         String token = jwtTokenProvider.createJwtToken(user.getUsername(), user.getRole());

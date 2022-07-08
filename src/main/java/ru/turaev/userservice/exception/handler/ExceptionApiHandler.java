@@ -4,9 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import ru.turaev.userservice.exception.IllegalUserException;
-import ru.turaev.userservice.exception.JwtAuthenticationException;
-import ru.turaev.userservice.exception.UserNotFoundException;
+import ru.turaev.userservice.exception.*;
 import ru.turaev.userservice.exception.exceptionmodel.BaseExceptionModel;
 import ru.turaev.userservice.exception.exceptionmodel.IllegalUserExceptionModel;
 
@@ -14,8 +12,8 @@ import java.time.LocalDateTime;
 
 @RestControllerAdvice
 public class ExceptionApiHandler {
-    @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<BaseExceptionModel> handleUserNotFoundException(UserNotFoundException ex) {
+    @ExceptionHandler({UserNotFoundException.class, UserAlreadyExistException.class})
+    public ResponseEntity<BaseExceptionModel> handleUserNotFoundException(BaseException ex) {
         HttpStatus httpStatus = ex.getStatus();
         BaseExceptionModel exceptionModel = BaseExceptionModel.builder()
                 .message(ex.getMessage())

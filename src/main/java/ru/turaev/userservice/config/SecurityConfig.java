@@ -38,7 +38,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .antMatchers(beginUrl + "auth/login").permitAll()
 
-                .antMatchers(beginUrl + "registration").hasAuthority(Permission.USERS_WRITE.getPermission())
+                .antMatchers(beginUrl + "registration/any").hasAuthority(Permission.USERS_WRITE.getPermission())
+                .antMatchers(beginUrl + "registration").permitAll()
 
                 .antMatchers(HttpMethod.GET, beginUrl + "users", beginUrl + "users/{id}").hasAuthority(Permission.USERS_READ.getPermission())
                 .antMatchers(HttpMethod.GET, beginUrl + "users/any/{id}", beginUrl + "users/any").hasAuthority(Permission.USERS_READ.getPermission())
