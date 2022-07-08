@@ -30,7 +30,7 @@ public class LoginServiceImpl implements LoginService {
     @Override
     public ResponseEntity<?> authenticate(LoginViewModel model) throws UserNotFoundException, AuthenticationException {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(model.getUsername(), model.getPassword()));
-        User user = userRepository.findByUsername(model.getUsername()).orElseThrow(() -> new UserNotFoundException("Пользователь с данным id не найден"));
+        User user = userRepository.findByUsername(model.getUsername()).orElseThrow(() -> new UserNotFoundException("The user with this id was not found"));
         String token = jwtTokenProvider.createJwtToken(user.getUsername(), user.getRole());
         Map<Object, Object> response = new HashMap<>();
         response.put("login", model.getUsername());

@@ -5,7 +5,7 @@ import lombok.Setter;
 import org.springframework.http.HttpStatus;
 import ru.turaev.userservice.dto.UserDto;
 
-public class IllegalUserException extends IllegalException {
+public class IllegalUserException extends BaseException {
     @Getter
     @Setter
     private UserDto userDto;

@@ -1,11 +1,7 @@
 package ru.turaev.userservice.controller;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.turaev.userservice.dto.UserDto;
-import ru.turaev.userservice.exception.IllegalException;
-import ru.turaev.userservice.exception.UserNotFoundException;
 import ru.turaev.userservice.service.UserService;
 
 import java.util.List;
@@ -40,15 +36,8 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> giveAdminRootToUser(@PathVariable long id) {
-        try {
-            userService.giveAdminRootToUser(id);
-            return new ResponseEntity<>(HttpStatus.OK);
-        } catch (IllegalException ex) {
-            return new ResponseEntity<>(ex.getMessage(), ex.getStatus());
-        } catch (UserNotFoundException ex) {
-            return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
-        }
+    public void giveAdminRootToUser(@PathVariable long id) {
+        userService.giveAdminRootToUser(id);
     }
 
     @DeleteMapping("/{id}")

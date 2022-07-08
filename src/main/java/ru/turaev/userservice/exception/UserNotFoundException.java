@@ -1,15 +1,12 @@
 package ru.turaev.userservice.exception;
 
-import lombok.Data;
+import lombok.Getter;
+import org.springframework.http.HttpStatus;
 
-import java.time.LocalDateTime;
-
-@Data
-public class UserNotFoundException extends RuntimeException {
-    private LocalDateTime localDateTime;
+@Getter
+public class UserNotFoundException extends BaseException {
 
     public UserNotFoundException(String message) {
-        super(message);
-        this.localDateTime = LocalDateTime.now();
+        super(message, HttpStatus.NOT_FOUND);
     }
 }

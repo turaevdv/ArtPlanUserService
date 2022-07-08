@@ -22,7 +22,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
 
-    private static final Supplier<UserNotFoundException> USER_NOT_FOUND = () -> new UserNotFoundException("Пользователь с данным id не найден");
+    private static final Supplier<UserNotFoundException> USER_NOT_FOUND = () -> new UserNotFoundException("The user with this id was not found");
 
     public UserServiceImpl(UserRepository userRepository, UserMapper userMapper) {
         this.userRepository = userRepository;
@@ -45,7 +45,7 @@ public class UserServiceImpl implements UserService {
         try {
             userRepository.save(user);
         } catch (RuntimeException ex) {
-            throw new IllegalUserException("Данный логин/пароль уже занят", HttpStatus.BAD_REQUEST, userMapper.toDto(user));
+            throw new IllegalUserException("This login is already in use", HttpStatus.BAD_REQUEST, userMapper.toDto(user));
         }
         return user;
     }
@@ -83,7 +83,7 @@ public class UserServiceImpl implements UserService {
     public UserDto deleteById(long id) throws UserNotFoundException {
         User user = userRepository.findById(id).orElseThrow(USER_NOT_FOUND);
         if (!user.isActive()) {
-            throw new IllegalUserException("Данный пользователь уже удалён", HttpStatus.BAD_REQUEST, userMapper.toDto(user));
+            throw new IllegalUserException("This user has already been deleted", HttpStatus.BAD_REQUEST, userMapper.toDto(user));
         }
         user.setActive(false);
         return userMapper.toDto(user);

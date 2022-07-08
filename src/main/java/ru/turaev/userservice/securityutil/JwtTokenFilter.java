@@ -1,5 +1,6 @@
 package ru.turaev.userservice.securityutil;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -34,8 +35,8 @@ public class JwtTokenFilter extends GenericFilterBean {
             }
         } catch (JwtAuthenticationException ex) {
             SecurityContextHolder.clearContext();
-            ((HttpServletResponse) servletResponse).sendError(ex.getHttpStatus().value());
-            throw new JwtAuthenticationException("This token is not expired or invalid");
+            ((HttpServletResponse) servletResponse).sendError(ex.getStatus().value());
+            throw new JwtAuthenticationException("This token is not expired or invalid", HttpStatus.FORBIDDEN);
         }
         filterChain.doFilter(servletRequest, servletResponse);
     }
