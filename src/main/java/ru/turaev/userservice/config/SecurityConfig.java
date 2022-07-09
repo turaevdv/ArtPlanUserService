@@ -37,6 +37,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/swagger-ui.html").permitAll()
 
                 .antMatchers(beginUrl + "auth/login").permitAll()
+                .antMatchers(beginUrl + "auth/token-verification").permitAll()
 
                 .antMatchers(beginUrl + "registration/any").hasAuthority(Permission.USERS_WRITE.getPermission())
                 .antMatchers(beginUrl + "registration").permitAll()

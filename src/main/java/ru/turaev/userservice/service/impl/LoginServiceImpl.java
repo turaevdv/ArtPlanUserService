@@ -12,6 +12,7 @@ import ru.turaev.userservice.repository.UserRepository;
 import ru.turaev.userservice.securityutil.JwtTokenProvider;
 import ru.turaev.userservice.service.LoginService;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -36,5 +37,14 @@ public class LoginServiceImpl implements LoginService {
         response.put("login", model.getUsername());
         response.put("token", token);
         return ResponseEntity.ok(response);
+    }
+
+    @Override
+    public boolean verifyToken(HttpServletRequest request) {
+        String token = jwtTokenProvider.resolveToken(request);
+        if (token.isBlank()) {
+            return false;
+        }
+        return jwtTokenProvider.validateToken(token);
     }
 }
