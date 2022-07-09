@@ -21,15 +21,12 @@ public class ContextListener implements ApplicationListener<ContextRefreshedEven
     @Override
     @Transactional
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
-        Optional<User> optionalAdmin = userRepository.findByUsername("admin");
+        Optional<User> optionalAdmin = userRepository.findByUsernameAndIsActiveIsTrue("admin");
         if (optionalAdmin.isEmpty()) {
             registerAdmin();
             return;
         }
         User admin = optionalAdmin.get();
-        if (!admin.isActive()) {
-            admin.setActive(true);
-        }
         if (!admin.isNonLocked()) {
             admin.setNonLocked(true);
         }

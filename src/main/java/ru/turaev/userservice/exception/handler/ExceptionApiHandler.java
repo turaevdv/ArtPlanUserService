@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 
 @RestControllerAdvice
 public class ExceptionApiHandler {
-    @ExceptionHandler({UserNotFoundException.class, UserAlreadyExistException.class})
+    @ExceptionHandler({UserNotFoundException.class, UserAlreadyExistException.class, CredentialException.class})
     public ResponseEntity<BaseExceptionModel> handleUserNotFoundException(BaseException ex) {
         HttpStatus httpStatus = ex.getStatus();
         BaseExceptionModel exceptionModel = BaseExceptionModel.builder()

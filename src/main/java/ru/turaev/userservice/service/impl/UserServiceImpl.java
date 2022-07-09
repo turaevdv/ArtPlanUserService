@@ -59,7 +59,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto findByUsername(String username) throws UserNotFoundException {
-        Optional<User> user = userRepository.findByUsername(username);
+        Optional<User> user = userRepository.findByUsernameAndIsActiveIsTrue(username);
         return userMapper.toDto(user.orElseThrow(USER_NOT_FOUND));
     }
 
