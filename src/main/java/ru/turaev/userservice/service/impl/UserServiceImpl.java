@@ -95,4 +95,24 @@ public class UserServiceImpl implements UserService {
         user.setActive(false);
         return userMapper.toDto(user);
     }
+
+    @Transactional
+    @Override
+    public void blockUser(long id) {
+        User user = userRepository.findByIdAndIsActiveIsTrue(id).orElseThrow(USER_NOT_FOUND);
+        if(!user.isNonLocked()) {
+            throw new IllegalUserException("The user is already blocked", HttpStatus.FORBIDDEN, userMapper.toDto(user));
+        }
+        user.setNonLocked(false);
+    }
+
+    @Transactional
+    @Override
+    public void unblockUser(long id) {
+        User user = userRepository.findByIdAndIsActiveIsTrue(id).orElseThrow(USER_NOT_FOUND);
+        if(user.isNonLocked()) {
+            throw new IllegalUserException("The user is already unblocked", HttpStatus.FORBIDDEN, userMapper.toDto(user));
+        }
+        user.setNonLocked(true);
+    }
 }

@@ -21,4 +21,8 @@ public interface UserService {
     List<UserDto> findAllUsersOfAnyTypes();
 
     UserDto deleteById(long id);
+
+    void blockUser(long id);
+
+    void unblockUser(long id);
 }

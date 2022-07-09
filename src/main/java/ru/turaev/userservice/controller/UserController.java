@@ -40,6 +40,16 @@ public class UserController {
         userService.giveAdminRootToUser(id);
     }
 
+    @PutMapping("/block/{id}")
+    public void blockUser(@PathVariable long id) {
+        userService.blockUser(id);
+    }
+
+    @PutMapping("/unblock/{id}")
+    public void unblockUser(@PathVariable long id) {
+        userService.unblockUser(id);
+    }
+
     @DeleteMapping("/{id}")
     public UserDto deleteUser(@PathVariable long id) {
         return userService.deleteById(id);
