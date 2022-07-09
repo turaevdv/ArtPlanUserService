@@ -14,5 +14,6 @@ public interface UserMapper {
 
     @Mapping(target = "role", expression = "java(Role.USER)")
     @Mapping(target = "active", expression = "java(true)")
+    @Mapping(target = "nonLocked", expression = "java(true)")
     User fromLoginViewModel(LoginViewModel model);
 }

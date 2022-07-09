@@ -30,6 +30,9 @@ public class ContextListener implements ApplicationListener<ContextRefreshedEven
         if (!admin.isActive()) {
             admin.setActive(true);
         }
+        if (!admin.isNonLocked()) {
+            admin.setNonLocked(true);
+        }
     }
 
     private void registerAdmin() {
@@ -38,6 +41,7 @@ public class ContextListener implements ApplicationListener<ContextRefreshedEven
                 .password("admin")
                 .role(Role.ADMIN)
                 .isActive(true)
+                .isNonLocked(true)
                 .build();
         registrationService.registerUserOfAnyType(newAdmin);
     }
