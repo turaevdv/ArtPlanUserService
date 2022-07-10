@@ -32,7 +32,7 @@ public class RegistrationServiceImpl implements RegistrationService {
     @Override
     public UserDto registerUserOfAnyType(User user) {
         if (!isUsernameUnused(user.getUsername())) {
-            throw new UserAlreadyExistException();
+            throw new UserAlreadyExistException("The user with this username already exist");
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userService.save(user);

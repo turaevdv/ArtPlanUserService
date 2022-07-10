@@ -1,7 +1,6 @@
 package ru.turaev.userservice.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,7 +32,6 @@ public class LoginServiceImpl implements LoginService {
     private final LoginAttemptService loginAttemptService;
     private final JwtTokenProvider jwtTokenProvider;
     private final UserMapper userMapper;
-    private final SessionFactory sessionFactory;
 
     @Value("${login.attempt.count}")
     private int ATTEMPT_COUNT;

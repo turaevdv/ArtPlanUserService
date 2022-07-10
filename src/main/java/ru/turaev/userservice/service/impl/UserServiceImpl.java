@@ -1,5 +1,6 @@
 package ru.turaev.userservice.service.impl;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,6 +12,7 @@ import ru.turaev.userservice.exception.UserAlreadyExistException;
 import ru.turaev.userservice.exception.UserNotFoundException;
 import ru.turaev.userservice.mapper.UserMapper;
 import ru.turaev.userservice.repository.UserRepository;
+import ru.turaev.userservice.service.LoginAttemptService;
 import ru.turaev.userservice.service.UserService;
 
 import java.util.List;
@@ -19,16 +21,13 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+    private final LoginAttemptService loginAttemptService;
 
     private static final Supplier<UserNotFoundException> USER_NOT_FOUND = () -> new UserNotFoundException("The user with this id was not found");
-
-    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper) {
-        this.userRepository = userRepository;
-        this.userMapper = userMapper;
-    }
 
     @Transactional
     @Override
@@ -113,6 +112,7 @@ public class UserServiceImpl implements UserService {
         if(user.isNonLocked()) {
             throw new IllegalUserException("The user is already unblocked", HttpStatus.FORBIDDEN, userMapper.toDto(user));
         }
+        loginAttemptService.deleteUserAttempts(user);
         user.setNonLocked(true);
     }
 }
