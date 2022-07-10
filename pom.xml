@@ -6,7 +6,7 @@
 
     <groupId>ru.turaev</groupId>
     <artifactId>ArtPlanUserService</artifactId>
-    <version>1.1.1</version>
+    <version>1.2.1</version>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
